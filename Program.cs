@@ -37,6 +37,8 @@ namespace CodePlus.ApiGateway
                                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
                                 .AddJsonFile("ocelot.json", true, true)
                                 .AddJsonFile($"ocelot.{env.EnvironmentName}.json", true, true)
+                                .AddJsonFile($"global.json", true, true)
+                                .AddJsonFile($"global.{env.EnvironmentName}.json", true, true)
                                 .AddEnvironmentVariables();
                         })
                         .UseIISIntegration()

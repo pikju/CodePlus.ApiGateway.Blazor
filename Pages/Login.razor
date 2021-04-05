@@ -10,16 +10,16 @@
 
 
 <Form Model="@_model"
-      LabelCol="new ColLayoutParam { Span = 4 }"
-      WrapperCol="new ColLayoutParam { Span = 20 }"
+      LabelCol="new ColLayoutParam {Span = 4 }"
+      WrapperCol="new ColLayoutParam {Span = 20 }"
       OnFinish="OnFinish"
       OnFinishFailed="OnFinishFailed">
-    <FormItem Label="密钥">
+    <FormItem Label="Key">
         <InputPassword @bind-Value="@context.Password" />
     </FormItem>
     <FormItem WrapperCol="new ColLayoutParam{ Offset = 10, Span = 4 }">
         <Button Type="@ButtonType.Primary" HtmlType="submit" Loading="@_loading">
-            登录
+            log in
         </Button>
     </FormItem>
 </Form>

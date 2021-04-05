@@ -199,13 +199,12 @@
         }
 
     }
-
     private async Task Delete(string upUrl, string downUrl)
     {
         var token = await GetToken();
         if (string.IsNullOrWhiteSpace(token))
         {
-            _message.Error("密钥过期请重新登录");
+            _message.Error("Key expired, please log in again");
             await OpenTemplate();
         }
         else
@@ -213,11 +212,11 @@
             var result = await OcelotAdminService.DeleteConfigAsync(upUrl, downUrl, token);
             if (!string.IsNullOrWhiteSpace(result.HttpResponseMessages))
             {
-                await OpenNotificationAsync("删除失败", result.HttpResponseMessages, NotificationType.Error);
+                await OpenNotificationAsync("Deletion failed", result.HttpResponseMessages, NotificationType.Error);
             }
             else
             {
-                _message.Success("删除成功");
+                _message.Success("Delete successfully");
                 _ocelotConfiguration = result.Result;
             }
         }
@@ -228,7 +227,7 @@
         var token = await GetToken();
         if (string.IsNullOrWhiteSpace(token))
         {
-            _message.Error("密钥过期请重新登录");
+            _message.Error("Key expired, please log in again");
             await OpenTemplate();
         }
         else
@@ -249,7 +248,7 @@
         var token = await GetToken();
         if (string.IsNullOrWhiteSpace(token))
         {
-            _message.Error("密钥过期请重新登录");
+            _message.Error("Key expired, please log in again");
             await OpenTemplate();
         }
         else
@@ -257,17 +256,16 @@
             var result = await OcelotAdminService.SetConfigAsync(model, token);
             if (!string.IsNullOrWhiteSpace(result.HttpResponseMessages))
             {
-                await OpenNotificationAsync("创建失败", result.HttpResponseMessages, NotificationType.Error);
+                await OpenNotificationAsync("Create failed", result.HttpResponseMessages, NotificationType.Error);
             }
             else
             {
                 _ocelotConfiguration = result.Result;
-                _message.Success("创建成功");
+                _message.Success("Created successfully");
                 Close();
             }
         }
     }
-
     private async Task Update()
     {
         model.UpstreamHttpMethod = upstreamHttpMethod.Split(',').ToList();
@@ -275,7 +273,7 @@
         var token = await GetToken();
         if (string.IsNullOrWhiteSpace(token))
         {
-            _message.Error("密钥过期请重新登录");
+            _message.Error("Key expired, please log in again");
             await OpenTemplate();
         }
         else
@@ -283,12 +281,12 @@
             var result = await OcelotAdminService.UpdateConfigAsync(model, token);
             if (!string.IsNullOrWhiteSpace(result.HttpResponseMessages))
             {
-                await OpenNotificationAsync("修改失败", result.HttpResponseMessages, NotificationType.Error);
+                await OpenNotificationAsync("Modification failed", result.HttpResponseMessages, NotificationType.Error);
             }
             else
             {
                 _ocelotConfiguration = result.Result;
-                _message.Success("修改成功");
+                _message.Success("Modified successfully");
                 Close();
             }
         }
@@ -310,7 +308,7 @@
     {
         var templateOptions = new LoginInputDto();
         var modalConfig = new ModalOptions();
-        modalConfig.Title = "登录";
+        modalConfig.Title = "Login";
         modalConfig.MaskClosable = false;
         modalConfig.Footer = null;
         modalConfig.Closable = false;
@@ -320,7 +318,7 @@
             var token = await GetToken();
             if (string.IsNullOrWhiteSpace(token))
             {
-                _message.Error("密钥过期请重新登录");
+                _message.Error("Key expired, please log in again");
                 await OpenTemplate();
             }
             else
@@ -332,8 +330,8 @@
         };
 
         _modalRef = await _modal
-            .CreateModalAsync<Login, LoginInputDto>
-            (modalConfig, templateOptions);
+        .CreateModalAsync<Login, LoginInputDto>
+        (modalConfig, templateOptions);
     }
 
     private async Task<string> GetToken()
