@@ -10,23 +10,22 @@
 @inject ModalService _modal
 @inject IJSRuntime JSRuntime
 
-
-<Button Type="primary" OnClick="OpenAdd">添加路由配置</Button>
+<Button Type="primary" OnClick="OpenAdd">Add routing configuration</Button>
 <Spin Spinning=@_loading>
     <Table Class="route-table"
            DataSource="@_ocelotConfiguration.Routes.ToArray()">
-        <Column @bind-Field="@context.DownstreamPathTemplate" Title="下游地址模板"></Column>
-        <Column @bind-Field="@context.UpstreamPathTemplate" Title="上游地址模板"></Column>
-        <Column @bind-Field="@context.DownstreamHostAndPorts" Title="下游IP端口">
+        <Column @bind-Field="@context.DownstreamPathTemplate" Title="Downstream Address Template"></Column>
+        <Column @bind-Field="@context.UpstreamPathTemplate" Title="Upstream address template"></Column>
+        <Column @bind-Field="@context.DownstreamHostAndPorts" Title="Downstream IP Port">
             @foreach (var hostInfo in context.DownstreamHostAndPorts)
             {
                 <Tag Color="green">@hostInfo.Host:@hostInfo.Port</Tag>
             }
         </Column>
-        <Column @bind-Field="@context.DownstreamScheme" Title="下游Scheme">
+        <Column @bind-Field="@context.DownstreamScheme" Title="DownstreamScheme">
             <Tag Color="blue">@context.DownstreamScheme</Tag>
         </Column>
-        <Column @bind-Field="@context.UpstreamHttpMethod" Title="上游Http请求">
+        <Column @bind-Field="@context.UpstreamHttpMethod" Title="Upstream Http Request">
             @foreach (var method in context.UpstreamHttpMethod)
             {
                 var color = "orange-inverse";
@@ -45,64 +44,63 @@
                 <Tag Color="@color">@method</Tag>
             }
         </Column>
-        <ActionColumn Title="操作">
+        <ActionColumn Title="Action">
             <Space Size="middle">
                 <SpaceItem>
-                    <Button Type="link" OnClick="_=>Edit(context.UpstreamPathTemplate,context.DownstreamPathTemplate)" Block>修改</Button>
+                    <Button Type="link" OnClick="_=>Edit(context.UpstreamPathTemplate,context.DownstreamPathTemplate)" Block>Modify</Button>
                 </SpaceItem>
                 <SpaceItem>
-                    <Popconfirm Placement="@PlacementType.TopRight" Title="@("是否确定删除此项")" OkText="@("确定")" CancelText="@("取消")" OnConfirm="_=>Delete(context.UpstreamPathTemplate,context.DownstreamPathTemplate)">
-                        <Button Type="link" Danger>删除</Button>
+                    <Popconfirm Placement="@PlacementType.TopRight" Title="@("Are you sure to delete this item")" OkText="@("OK")" CancelText="@("Cancel")" OnConfirm="_=> Delete(context.UpstreamPathTemplate,context.DownstreamPathTemplate)">
+                        <Button Type="link" Danger>Delete</Button>
                     </Popconfirm>
                 </SpaceItem>
             </Space>
         </ActionColumn>
     </Table>
 </Spin>
-
 <div>
-    <Drawer Closable="true" Width="720" Visible="_visible" Title='("网关路由信息")' OnClose="_=>Close()">
+    <Drawer Closable="true" Width="720" Visible="_visible" Title='("Gateway routing information")' OnClose="_=>Close()">
         <Template style="height:90%">
             <Row Gutter="16">
                 <AntDesign.Col Span="24">
-                    <Text>上游地址模板</Text>
-                    <Input Class="config-input" Placeholder="请输入上游地址模板" Disabled="_isEdit" TValue="string" @bind-Value="@model.UpstreamPathTemplate"></Input>
+                    <Text>Upstream address template</Text>
+                    <Input Class="config-input" Placeholder="Please enter the upstream address template" Disabled="_isEdit" TValue="string" @bind-Value="@model.UpstreamPathTemplate"></Input>
                 </AntDesign.Col>
             </Row>
             <br />
             <Row Gutter="16">
                 <AntDesign.Col Span="24">
-                    <Text>下游地址模板</Text>
-                    <Input Class="config-input" Placeholder="请输入下游地址模板" Disabled="_isEdit" TValue="string" @bind-Value="@model.DownstreamPathTemplate"></Input>
+                    <Text>Downstream address template</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream address template" Disabled="_isEdit" TValue="string" @bind-Value="@model.DownstreamPathTemplate"></Input>
                 </AntDesign.Col>
             </Row>
             <br />
             <Row Gutter="16">
                 <AntDesign.Col Span="12">
-                    <Text>上游地址HTTP方法</Text> <Text Type="warning">（多个用英文逗号隔开）</Text>
-                    <Input Class="config-input" Placeholder="请输入上游地址HTTP方法" TValue="string" @bind-Value="@upstreamHttpMethod" />
+                    <Text>HTTP method of upstream address</Text> <Text Type="warning">(multiple separated by comma)</Text>
+                    <Input Class="config-input" Placeholder="Please enter the HTTP method of the upstream address" TValue="string" @bind-Value="@upstreamHttpMethod" />
                 </AntDesign.Col>
                 <AntDesign.Col Span="12">
-                    <Text>下游地址HTTP方法</Text>
-                    <Input Class="config-input" Placeholder="请输入下游地址HTTP方法" TValue="string" @bind-Value="@model.DownstreamHttpMethod" />
-                </AntDesign.Col>
-            </Row>
-            <br />
-            <Row Gutter="16">
-                <AntDesign.Col Span="12">
-                    <Text>下游IP</Text>
-                    <Input Class="config-input" Placeholder="请输入下游IP" TValue="string" @bind-Value="@fileHostAndPort.Host" />
-                </AntDesign.Col>
-                <AntDesign.Col Span="12">
-                    <Text>下游端口</Text>
-                    <Input Class="config-input" Placeholder="请输入下游端口" TValue="int" @bind-Value="@fileHostAndPort.Port" />
+                    <Text>Downstream address HTTP method</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream address HTTP method" TValue="string" @bind-Value="@model.DownstreamHttpMethod" />
                 </AntDesign.Col>
             </Row>
             <br />
             <Row Gutter="16">
                 <AntDesign.Col Span="12">
-                    <Text>下游Scheme</Text> <Text Type="warning">（有效参数：https|http|ws）</Text>
-                    <Input Class="config-input" Placeholder="请输入下游IP" TValue="string" @bind-Value="@model.DownstreamScheme" />
+                    <Text>Downstream IP</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream IP" TValue="string" @bind-Value="@fileHostAndPort.Host" />
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <Text>Downstream port</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream port" TValue="int" @bind-Value="@fileHostAndPort.Port" />
+                </AntDesign.Col>
+            </Row>
+            <br />
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Text>Downstream Scheme</Text> <Text Type="warning">(Valid parameter: https|http|ws)</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream IP" TValue="string" @bind-Value="@model.DownstreamScheme" />
                 </AntDesign.Col>
             </Row>
             <br />
@@ -111,8 +109,8 @@
 
                 </AntDesign.Col>
                 <AntDesign.Col Span="6" Style="text-align: end;">
-                    <Button Type="default" OnClick="Close">返回</Button>
-                    <Button Type="primary" OnClick="_=>Submit()">提交</Button>
+                    <Button Type="default" OnClick="Close">Return</Button>
+                    <Button Type="primary" OnClick="_=>Submit()">Submit</Button>
                 </AntDesign.Col>
             </Row>
 
@@ -319,13 +317,14 @@
         modalConfig.Keyboard = false;
         modalConfig.AfterClose = async () =>
         {
-            var token =await GetToken();
+            var token = await GetToken();
             if (string.IsNullOrWhiteSpace(token))
             {
                 _message.Error("密钥过期请重新登录");
                 await OpenTemplate();
             }
-            else {
+            else
+            {
                 _ocelotConfiguration = await OcelotAdminService.GetConfigAsync(token);
                 _loading = false;
                 await InvokeAsync(StateHasChanged);

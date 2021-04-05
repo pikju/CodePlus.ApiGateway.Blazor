@@ -15,7 +15,6 @@
             @Body
         </div>
     </div>*@
-
 <Layout>
     <Sider Collapsible Collapsed=@collapsed NoTrigger OnCollapse="OnCollapse">
 
@@ -30,7 +29,7 @@
         <Menu Theme="MenuTheme.Dark" Mode="MenuMode.Inline" DefaultSelectedKeys=@(new[]{"1"})>
             <MenuItem Key="3" RouterLink="/">
                 <Icon Style="font-size:20px" Type="global" Theme="outline" />
-                <span>网关配置</span>
+                <span>Gateway configuration</span>
             </MenuItem>
         </Menu>
     </Sider>
@@ -53,7 +52,6 @@
         </Content>
     </Layout>
 </Layout>
-
 <style>
     .trigger {
         font-size: 20px;
