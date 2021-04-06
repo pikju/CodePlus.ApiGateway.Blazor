@@ -25,6 +25,9 @@
         <Column @bind-Field="@context.DownstreamScheme" Title="DownstreamScheme">
             <Tag Color="blue">@context.DownstreamScheme</Tag>
         </Column>
+        <Column @bind-Field="@context.FileCacheOptions" Title="FileCacheOptions">
+            <Tag Color="blue">@context.FileCacheOptions</Tag>
+        </Column>
         <Column @bind-Field="@context.UpstreamHttpMethod" Title="Upstream Http Request">
             @foreach (var method in context.UpstreamHttpMethod)
             {
@@ -70,18 +73,29 @@
             <br />
             <Row Gutter="16">
                 <AntDesign.Col Span="24">
-                    <Text>Downstream address template</Text>
+                    <Text>Downstream Pattern</Text>
                     <Input Class="config-input" Placeholder="Please enter the downstream address template" Disabled="_isEdit" TValue="string" @bind-Value="@model.DownstreamPathTemplate"></Input>
                 </AntDesign.Col>
             </Row>
             <br />
             <Row Gutter="16">
                 <AntDesign.Col Span="12">
-                    <Text>HTTP method of upstream address</Text> <Text Type="warning">(multiple separated by comma)</Text>
+                    <Text>Region Cache</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream IP" TValue="string" @bind-Value="@model.FileCacheOptions.Region" />
+                </AntDesign.Col>
+                <AntDesign.Col Span="12">
+                    <Text>TTL</Text>
+                    <Input Class="config-input" Placeholder="Please enter the downstream port" TValue="int" @bind-Value="@model.FileCacheOptions.TtlSeconds" />
+                </AntDesign.Col>
+            </Row>
+            <br />
+            <Row Gutter="16">
+                <AntDesign.Col Span="12">
+                    <Text>Upstream HTTP Method</Text> <Text Type="warning">(separated by comma)</Text>
                     <Input Class="config-input" Placeholder="Please enter the HTTP method of the upstream address" TValue="string" @bind-Value="@upstreamHttpMethod" />
                 </AntDesign.Col>
                 <AntDesign.Col Span="12">
-                    <Text>Downstream address HTTP method</Text>
+                    <Text>Downstream HTTP Method</Text>
                     <Input Class="config-input" Placeholder="Please enter the downstream address HTTP method" TValue="string" @bind-Value="@model.DownstreamHttpMethod" />
                 </AntDesign.Col>
             </Row>
@@ -92,7 +106,7 @@
                     <Input Class="config-input" Placeholder="Please enter the downstream IP" TValue="string" @bind-Value="@fileHostAndPort.Host" />
                 </AntDesign.Col>
                 <AntDesign.Col Span="12">
-                    <Text>Downstream port</Text>
+                    <Text>Downstream Port</Text>
                     <Input Class="config-input" Placeholder="Please enter the downstream port" TValue="int" @bind-Value="@fileHostAndPort.Port" />
                 </AntDesign.Col>
             </Row>
@@ -268,7 +282,7 @@
     }
     private async Task Update()
     {
-        model.UpstreamHttpMethod = upstreamHttpMethod.Split(',').ToList();
+        model.UpstreamHttpMethod = !string.IsNullOrEmpty(upstreamHttpMethod)? upstreamHttpMethod.Split(',').ToList(): new List<string>();
         model.DownstreamHostAndPorts = new List<FileHostAndPort> { fileHostAndPort };
         var token = await GetToken();
         if (string.IsNullOrWhiteSpace(token))
